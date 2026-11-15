@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="WhyNot Agency: Telegram-боти для бізнесу. Демо, пакети та ціни.">
+<title>WhyNot Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;600&display=swap">
+<style>
+/* Layout: split hero (copy left, live chat mock right), then demo grid, 3-step line, price table, FAQ. Ink blue on cool paper, one Telegram-blue accent. */
+:root{
+  --bg:#F1F5F8; --panel:#FFFFFF; --panel2:#E7EEF3; --ink:#0D1B2A; --mute:#4B5E70; --line:#D3DEE6;
+  --accent:#0F6CB6; --accent-ink:#FFFFFF; --tint:#DCEBF7; --bubble-me:#0F6CB6; --bubble-me-ink:#FFFFFF; --ok:#1B7A4B;
+  --display:"Unbounded","Onest",system-ui,sans-serif; --body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0A131A; --panel:#111E28; --panel2:#182833; --ink:#E8F0F6; --mute:#9FB2C2; --line:#223645;
+  --accent:#4DB6F5; --accent-ink:#06141E; --tint:#12303F; --bubble-me:#1E88D0; --bubble-me-ink:#FFFFFF; --ok:#5FD39A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A131A; --panel:#111E28; --panel2:#182833; --ink:#E8F0F6; --mute:#9FB2C2; --line:#223645;
+  --accent:#4DB6F5; --accent-ink:#06141E; --tint:#12303F; --bubble-me:#1E88D0; --bubble-me-ink:#FFFFFF; --ok:#5FD39A; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body);padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.01em;margin:0;text-wrap:balance}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:12px;font:600 16px var(--body);text-decoration:none;border:1.5px solid var(--accent);cursor:pointer;transition:transform .15s,background .15s}
+.btn.pri{background:var(--accent);color:var(--accent-ink)}
+.btn.sec{background:transparent;color:var(--accent)}
+.btn:hover{transform:translateY(-1px)}
+/* header */
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 0}
+.logo{font:600 18px var(--display);text-decoration:none;letter-spacing:-.02em}
+.logo b{color:var(--accent);font-weight:600}
+nav{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+nav a.l{text-decoration:none;color:var(--mute);font-weight:500}
+nav a.l:hover{color:var(--ink)}
+.lang{display:flex;gap:4px;background:var(--panel2);padding:4px;border-radius:10px}
+.lang button{border:0;background:transparent;color:var(--mute);font:600 13px var(--body);padding:6px 10px;border-radius:7px;cursor:pointer;min-height:32px}
+.lang button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:48px 0 72px}
+.hero h1{font-size:clamp(30px,4.6vw,52px);line-height:1.1}
+.hero p.sub{font-size:19px;color:var(--mute);max-width:52ch;margin:22px 0 30px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.facts{display:flex;gap:28px;flex-wrap:wrap;margin:36px 0 0;padding:0;list-style:none;color:var(--mute);font-size:14px}
+.facts li{display:flex;flex-direction:column;gap:2px}
+.facts b{font:600 22px var(--display);color:var(--ink)}
+.phone{justify-self:center;width:100%;max-width:340px;background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:14px;box-shadow:0 24px 60px -30px rgba(13,27,42,.45)}
+.phone .bar{display:flex;align-items:center;gap:10px;padding:6px 8px 12px;border-bottom:1px solid var(--line)}
+.ava{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:600 14px var(--display)}
+.bar strong{display:block;font-size:14px;line-height:1.2}.bar span{font-size:12px;color:var(--mute)}
+.chat{display:flex;flex-direction:column;gap:8px;padding:14px 4px 6px}
+.m{max-width:84%;padding:9px 13px;border-radius:16px;font-size:14px;line-height:1.4}
+.m.bot{background:var(--panel2);border-bottom-left-radius:5px;align-self:flex-start}
+.m.me{background:var(--bubble-me);color:var(--bubble-me-ink);border-bottom-right-radius:5px;align-self:flex-end}
+.slots{display:flex;gap:6px;flex-wrap:wrap;align-self:flex-start}
+.slots span{border:1.5px solid var(--accent);color:var(--accent);border-radius:10px;padding:6px 12px;font:600 13px var(--body)}
+.slots span.on{background:var(--accent);color:var(--accent-ink)}
+.m.ok{border:1.5px solid var(--ok)}
+.m.ok b{color:var(--ok)}
+/* sections */
+section{padding:56px 0;border-top:1px solid var(--line)}
+section>.wrap>h2{font-size:clamp(24px,3.2vw,34px);margin-bottom:10px}
+.lead{color:var(--mute);max-width:60ch;margin:0 0 34px}
+.demos{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h3{font-size:17px}
+.card p{margin:0;color:var(--mute);font-size:15px;flex:1}
+.card a.go{color:var(--accent);font-weight:600;text-decoration:none;display:inline-flex;gap:6px;align-items:center;min-height:44px}
+.card a.go:hover{text-decoration:underline}
+.card.own{background:var(--tint);border-style:dashed;border-color:var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;counter-reset:s}
+.step{padding:0 28px 0 0;position:relative;min-width:0}
+.step h3{font-size:17px;margin-bottom:8px}
+.step p{margin:0;color:var(--mute)}
+.step .n{font:600 13px var(--display);color:var(--accent);display:block;margin-bottom:12px}
+.price{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.plan{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.plan.top{border:2px solid var(--accent)}
+.plan .tag{font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.plan h3{font-size:17px}
+.plan .p{font:600 28px var(--display);letter-spacing:-.02em}
+.plan ul{margin:0;padding-left:18px;color:var(--mute);font-size:15px;flex:1}
+.plan li{margin:4px 0}
+.note{margin-top:22px;color:var(--mute);font-size:15px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 20px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600;padding:16px 0;list-style:none;display:flex;justify-content:space-between;gap:12px;min-height:48px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:500 22px var(--body);color:var(--accent)}
+details[open] summary::after{content:"\2212"}
+details p{margin:0 0 16px;color:var(--mute)}
+.cta{background:var(--ink);color:var(--bg);border-radius:24px;padding:44px 32px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin:56px 0}
+.cta h2{font-size:clamp(22px,3vw,30px);max-width:20ch}
+.cta p{margin:8px 0 0;opacity:.8;max-width:46ch}
+.cta .btn{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+footer{padding:12px 0 40px;color:var(--mute);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:36px;padding:28px 0 52px}
+  .steps{grid-template-columns:1fr;gap:26px}.step{padding:0}
+  nav a.l{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <a class="logo" href="#top">Why<b>Not</b> Agency</a>
+  <nav>
+    <a class="l" href="#demo" data-i="nav_demo"></a>
+    <a class="l" href="#plans" data-i="nav_plans"></a>
+    <a class="l" href="#faq" data-i="nav_faq"></a>
+    <div class="lang" role="group" aria-label="Language">
+      <button data-l="uk" id="lang-uk">UA</button><button data-l="ru" id="lang-ru">RU</button><button data-l="pl" id="lang-pl">PL</button><button data-l="en" id="lang-en">EN</button>
+    </div>
+  </nav>
+</header>
+
+<div class="hero" id="top">
+  <div>
+    <h1 data-i="h1"></h1>
+    <p class="sub" data-i="sub"></p>
+    <div class="ctas">
+      <a class="btn pri" data-demo="" target="_blank" rel="noopener" data-i="cta_demo"></a>
+      <a class="btn sec" href="#plans" data-i="cta_plans"></a>
+    </div>
+    <ul class="facts">
+      <li><b>24/7</b><span data-i="f1"></span></li>
+      <li><b>$150</b><span data-i="f2"></span></li>
+      <li><b>1 min</b><span data-i="f3"></span></li>
+    </ul>
+  </div>
+  <div class="phone" aria-label="Telegram bot example">
+    <div class="bar"><div class="ava">B</div><div><strong data-i="c_name"></strong><span data-i="c_sub"></span></div></div>
+    <div class="chat">
+      <div class="m bot" data-i="c1"></div>
+      <div class="m me" data-i="c2"></div>
+      <div class="m bot" data-i="c3"></div>
+      <div class="slots"><span>16:00</span><span class="on">17:30</span><span>19:00</span></div>
+      <div class="m ok bot" data-i="c4" data-html></div>
+    </div>
+  </div>
+</div>
+
+<section id="demo"><div class="wrap">
+  <h2 data-i="demo_h"></h2>
+  <p class="lead" data-i="demo_p"></p>
+  <div class="demos">
+    <div class="card"><h3 data-i="d1_h"></h3><p data-i="d1_p"></p><a class="go" data-demo="barber" target="_blank" rel="noopener"><span data-i="try"></span> &rarr;</a></div>
+    <div class="card"><h3 data-i="d2_h"></h3><p data-i="d2_p"></p><a class="go" data-demo="beauty" target="_blank" rel="noopener"><span data-i="try"></span> &rarr;</a></div>
+    <div class="card"><h3 data-i="d3_h"></h3><p data-i="d3_p"></p><a class="go" data-demo="auto" target="_blank" rel="noopener"><span data-i="try"></span> &rarr;</a></div>
+    <div class="card"><h3 data-i="d4_h"></h3><p data-i="d4_p"></p><a class="go" data-demo="sauna" target="_blank" rel="noopener"><span data-i="try"></span> &rarr;</a></div>
+    <div class="card own"><h3 data-i="d5_h"></h3><p data-i="d5_p"></p><a class="go" data-contact="" target="_blank" rel="noopener"><span data-i="write"></span> &rarr;</a></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2 data-i="how_h"></h2>
+  <p class="lead" data-i="how_p"></p>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3 data-i="s1_h"></h3><p data-i="s1_p"></p></div>
+    <div class="step"><span class="n">2</span><h3 data-i="s2_h"></h3><p data-i="s2_p"></p></div>
+    <div class="step"><span class="n">3</span><h3 data-i="s3_h"></h3><p data-i="s3_p"></p></div>
+  </div>
+</div></section>
+
+<section id="plans"><div class="wrap">
+  <h2 data-i="pl_h"></h2>
+  <p class="lead" data-i="pl_p"></p>
+  <div class="price">
+    <div class="plan top"><span class="tag" data-i="pl1_t"></span><h3 data-i="pl1_h"></h3><div class="p">$150</div><ul><li data-i="pl1_a"></li><li data-i="pl1_b"></li><li data-i="pl1_c"></li><li data-i="pl1_d"></li></ul><a class="btn pri" data-contact="" target="_blank" rel="noopener" data-i="order"></a></div>
+    <div class="plan"><span class="tag" data-i="pl2_t"></span><h3 data-i="pl2_h"></h3><div class="p">$300–450</div><ul><li data-i="pl2_a"></li><li data-i="pl2_b"></li><li data-i="pl2_c"></li><li data-i="pl2_d"></li></ul><a class="btn sec" data-contact="" target="_blank" rel="noopener" data-i="order"></a></div>
+    <div class="plan"><span class="tag" data-i="pl3_t"></span><h3 data-i="pl3_h"></h3><div class="p">$250–400</div><ul><li data-i="pl3_a"></li><li data-i="pl3_b"></li><li data-i="pl3_c"></li><li data-i="pl3_d"></li></ul><a class="btn sec" data-contact="" target="_blank" rel="noopener" data-i="order"></a></div>
+    <div class="plan"><span class="tag" data-i="pl4_t"></span><h3 data-i="pl4_h"></h3><div class="p" data-i="pl4_p"></div><ul><li data-i="pl4_a"></li><li data-i="pl4_b"></li><li data-i="pl4_c"></li></ul><a class="btn sec" data-contact="" target="_blank" rel="noopener" data-i="order"></a></div>
+  </div>
+  <p class="note" data-i="pl_note"></p>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <h2 data-i="faq_h" style="margin-bottom:24px"></h2>
+  <details><summary data-i="q1"></summary><p data-i="a1"></p></details>
+  <details><summary data-i="q2"></summary><p data-i="a2"></p></details>
+  <details><summary data-i="q3"></summary><p data-i="a3"></p></details>
+  <details><summary data-i="q4"></summary><p data-i="a4"></p></details>
+</div></section>
+
+<div class="cta">
+  <div><h2 data-i="end_h"></h2><p data-i="end_p"></p></div>
+  <a class="btn" data-contact="" target="_blank" rel="noopener" data-i="end_btn"></a>
+</div>
+
+<footer><span>WhyNot Agency</span><span data-i="foot"></span></footer>
+</div>
+
+<script>
+var BOT="https://t.me/whynot_agency_demo_bot";
+var CONTACT="https://t.me/whynot_agency_demo_bot"; // сюди підставити свій Telegram: https://t.me/ВАШ_НІК
+var T={
+uk:{nav_demo:"Демо",nav_plans:"Пакети",nav_faq:"Питання",
+h1:"Telegram-бот, який записує клієнтів, поки ви працюєте",
+sub:"Клієнт обирає послугу, майстра та час у Telegram за хвилину. Вам приходить сповіщення, йому ‒ нагадування. Без дзвінків і переписок у директі.",
+cta_demo:"Спробувати демо",cta_plans:"Пакети та ціни",f1:"бот працює на сервері",f2:"базовий бот від",f3:"щоб пройти демо",
+c_name:"Барбершоп · демо",c_sub:"бот",c1:"Привіт! Оберіть послугу.",c2:"Стрижка",c3:"Оберіть час на сьогодні:",c4:"<b>Записано.</b> Стрижка, сьогодні 17:30. Нагадаю за 2 години.",
+demo_h:"Спробуйте самі, демо за 1 хвилину",demo_p:"Натисніть Start у Telegram і пройдіть шлях клієнта: так бот виглядатиме для ваших гостей.",
+d1_h:"Барбершопи",d1_p:"Вибір барбера, зручний час, підтвердження та нагадування.",
+d2_h:"Салони краси",d2_p:"Манікюр, брови, стрижки: запис на послугу без переписок.",
+d3_h:"Автосервіси",d3_p:"Запис на ТО, діагностику чи шиномонтаж на вільний час.",
+d4_h:"Лазні та сауни",d4_p:"Бронювання за годинами, нагадування й акції для гостей.",
+d5_h:"Вашої ніші немає?",d5_p:"Напишіть нам, підготуємо демо саме під ваш заклад.",try:"Відкрити демо",write:"Написати в Telegram",
+how_h:"Як це працює",how_p:"Три кроки від першого знайомства до готового бота.",
+s1_h:"Дивитесь демо",s1_p:"Проходите шлях клієнта в боті для вашої ніші й вирішуєте, що потрібно саме вам.",
+s2_h:"Ми налаштовуємо під вас",s2_p:"Назва, послуги, ціни, майстри, графік роботи та сповіщення власнику.",
+s3_h:"Запуск і підтримка",s3_p:"Бот працює на сервері без перерв. Хостинг і зміни входять у підтримку.",
+pl_h:"Пакети та ціни",pl_p:"Обирайте за задачею. Точну вартість назвемо після короткої розмови.",
+pl1_t:"Найчастіше обирають",pl1_h:"Базовий",pl1_a:"Меню послуг",pl1_b:"Онлайн-запис",pl1_c:"Нагадування клієнтам",pl1_d:"Сповіщення власнику",
+pl2_t:"Для продажів",pl2_h:"Просунутий",pl2_a:"Каталог товарів із фото",pl2_b:"Кошик і замовлення",pl2_c:"Оплата LiqPay / Mono / Stripe",pl2_d:"Доставка",
+pl3_t:"Для навчання",pl3_h:"Онлайн-школи та інфобізнес",pl3_a:"Автоворонка",pl3_b:"Видача уроків",pl3_c:"Перевірка ДЗ і тестів",pl3_d:"Закриті канали за підпискою",
+pl4_t:"Для великих задач",pl4_h:"Enterprise",pl4_p:"від $600",pl4_a:"Інтеграція з CRM (Bitrix24, KeyCRM)",pl4_b:"Синхронізація залишків (1С / Google)",pl4_c:"Багатомовність",
+order:"Замовити",pl_note:"Технічна підтримка та хостинг: $20–40 на місяць.",
+faq_h:"Часті питання",
+q1:"Що потрібно моїм клієнтам?",a1:"Лише Telegram. Бот відкривається за посиланням, установлювати нічого не треба.",
+q2:"Чи можна змінити послуги та ціни після запуску?",a2:"Так. Зміни вносимо ми в межах підтримки.",
+q3:"Скільки це коштує?",a3:"Базовий бот коштує від $150. Хостинг і підтримка: $20–40 на місяць. Складніші пакети рахуємо під задачу.",
+q4:"З чого почати?",a4:"Спробуйте демо та напишіть нам у Telegram. Обговоримо задачі й назвемо вартість.",
+end_h:"Готові спробувати?",end_p:"Напишіть у Telegram, розкажіть про ваш заклад, і ми підкажемо, який бот підійде.",end_btn:"Написати в Telegram",foot:"Telegram-боти для бізнесу"},
+ru:{nav_demo:"Демо",nav_plans:"Пакеты",nav_faq:"Вопросы",
+h1:"Telegram-бот, который записывает клиентов, пока вы работаете",
+sub:"Клиент выбирает услугу, мастера и время в Telegram за минуту. Вам приходит уведомление, ему ‒ напоминание. Без звонков и переписок в директе.",
+cta_demo:"Попробовать демо",cta_plans:"Пакеты и цены",f1:"бот работает на сервере",f2:"базовый бот от",f3:"чтобы пройти демо",
+c_name:"Барбершоп · демо",c_sub:"бот",c1:"Привет! Выберите услугу.",c2:"Стрижка",c3:"Выберите время на сегодня:",c4:"<b>Записано.</b> Стрижка, сегодня 17:30. Напомню за 2 часа.",
+demo_h:"Попробуйте сами, демо за 1 минуту",demo_p:"Нажмите Start в Telegram и пройдите путь клиента: так бот будет выглядеть для ваших гостей.",
+d1_h:"Барбершопы",d1_p:"Выбор барбера, удобное время, подтверждение и напоминания.",
+d2_h:"Салоны красоты",d2_p:"Маникюр, брови, стрижки: запись на услугу без переписок.",
+d3_h:"Автосервисы",d3_p:"Запись на ТО, диагностику или шиномонтаж на свободное время.",
+d4_h:"Бани и сауны",d4_p:"Бронирование по часам, напоминания и акции для гостей.",
+d5_h:"Вашей ниши нет?",d5_p:"Напишите нам, подготовим демо именно под ваше заведение.",try:"Открыть демо",write:"Написать в Telegram",
+how_h:"Как это работает",how_p:"Три шага от знакомства до готового бота.",
+s1_h:"Смотрите демо",s1_p:"Проходите путь клиента в боте для вашей ниши и решаете, что нужно именно вам.",
+s2_h:"Мы настраиваем под вас",s2_p:"Название, услуги, цены, мастера, график работы и уведомления владельцу.",
+s3_h:"Запуск и поддержка",s3_p:"Бот работает на сервере без перерывов. Хостинг и изменения входят в поддержку.",
+pl_h:"Пакеты и цены",pl_p:"Выбирайте по задаче. Точную стоимость назовём после короткого разговора.",
+pl1_t:"Выбирают чаще всего",pl1_h:"Базовый",pl1_a:"Меню услуг",pl1_b:"Онлайн-запись",pl1_c:"Напоминания клиентам",pl1_d:"Уведомления владельцу",
+pl2_t:"Для продаж",pl2_h:"Продвинутый",pl2_a:"Каталог товаров с фото",pl2_b:"Корзина и заказы",pl2_c:"Оплата LiqPay / Mono / Stripe",pl2_d:"Доставка",
+pl3_t:"Для обучения",pl3_h:"Онлайн-школы и инфобизнес",pl3_a:"Автоворонка",pl3_b:"Выдача уроков",pl3_c:"Проверка ДЗ и тестов",pl3_d:"Закрытые каналы по подписке",
+pl4_t:"Для крупных задач",pl4_h:"Enterprise",pl4_p:"от $600",pl4_a:"Интеграция с CRM (Bitrix24, KeyCRM)",pl4_b:"Синхронизация остатков (1С / Google)",pl4_c:"Многоязычность",
+order:"Заказать",pl_note:"Техподдержка и хостинг: $20–40 в месяц.",
+faq_h:"Частые вопросы",
+q1:"Что нужно моим клиентам?",a1:"Только Telegram. Бот открывается по ссылке, ничего устанавливать не нужно.",
+q2:"Можно ли изменить услуги и цены после запуска?",a2:"Да. Изменения вносим мы в рамках поддержки.",
+q3:"Сколько это стоит?",a3:"Базовый бот стоит от $150. Хостинг и поддержка: $20–40 в месяц. Более сложные пакеты считаем под задачу.",
+q4:"С чего начать?",a4:"Попробуйте демо и напишите нам в Telegram. Обсудим задачи и назовём стоимость.",
+end_h:"Готовы попробовать?",end_p:"Напишите в Telegram, расскажите о вашем заведении, и мы подскажем, какой бот подойдёт.",end_btn:"Написать в Telegram",foot:"Telegram-боты для бизнеса"},
+pl:{nav_demo:"Demo",nav_plans:"Pakiety",nav_faq:"Pytania",
+h1:"Bot w Telegramie, który zapisuje klientów, gdy Ty pracujesz",
+sub:"Klient wybiera usługę, specjalistę i godzinę w Telegramie w minutę. Ty dostajesz powiadomienie, on przypomnienie. Bez telefonów i wiadomości w DM.",
+cta_demo:"Wypróbuj demo",cta_plans:"Pakiety i ceny",f1:"bot działa na serwerze",f2:"podstawowy bot od",f3:"na przejście demo",
+c_name:"Barber · demo",c_sub:"bot",c1:"Cześć! Wybierz usługę.",c2:"Strzyżenie",c3:"Wybierz godzinę na dziś:",c4:"<b>Zapisano.</b> Strzyżenie, dziś 17:30. Przypomnę 2 godziny wcześniej.",
+demo_h:"Sprawdź sam, demo w 1 minutę",demo_p:"Kliknij Start w Telegramie i przejdź ścieżkę klienta: tak bot będzie wyglądał dla Twoich gości.",
+d1_h:"Barberzy",d1_p:"Wybór barbera, dogodna godzina, potwierdzenie i przypomnienia.",
+d2_h:"Salony piękności",d2_p:"Manicure, brwi, fryzury: zapis na usługę bez pisania wiadomości.",
+d3_h:"Warsztaty samochodowe",d3_p:"Zapis na przegląd, diagnostykę lub wymianę opon na wolny termin.",
+d4_h:"Łaźnie i sauny",d4_p:"Rezerwacje na godziny, przypomnienia i promocje dla gości.",
+d5_h:"Nie ma Twojej branży?",d5_p:"Napisz do nas, przygotujemy demo dla Twojego lokalu.",try:"Otwórz demo",write:"Napisz na Telegramie",
+how_h:"Jak to działa",how_p:"Trzy kroki od pierwszego kontaktu do gotowego bota.",
+s1_h:"Oglądasz demo",s1_p:"Przechodzisz ścieżkę klienta w bocie dla swojej branży i decydujesz, czego potrzebujesz.",
+s2_h:"Konfigurujemy pod Ciebie",s2_p:"Nazwa, usługi, ceny, specjaliści, godziny pracy i powiadomienia dla właściciela.",
+s3_h:"Start i wsparcie",s3_p:"Bot działa na serwerze bez przerw. Hosting i zmiany są w ramach wsparcia.",
+pl_h:"Pakiety i ceny",pl_p:"Wybierz według zadania. Dokładną cenę podamy po krótkiej rozmowie.",
+pl1_t:"Najczęściej wybierany",pl1_h:"Podstawowy",pl1_a:"Menu usług",pl1_b:"Rezerwacja online",pl1_c:"Przypomnienia dla klientów",pl1_d:"Powiadomienia dla właściciela",
+pl2_t:"Do sprzedaży",pl2_h:"Zaawansowany",pl2_a:"Katalog produktów ze zdjęciami",pl2_b:"Koszyk i zamówienia",pl2_c:"Płatności LiqPay / Mono / Stripe",pl2_d:"Dostawa",
+pl3_t:"Do nauki",pl3_h:"Szkoły online i infobiznes",pl3_a:"Automatyczny lejek",pl3_b:"Udostępnianie lekcji",pl3_c:"Sprawdzanie prac i testów",pl3_d:"Zamknięte kanały za subskrypcję",
+pl4_t:"Duże projekty",pl4_h:"Enterprise",pl4_p:"od $600",pl4_a:"Integracja z CRM (Bitrix24, KeyCRM)",pl4_b:"Synchronizacja stanów (1C / Google)",pl4_c:"Wielojęzyczność",
+order:"Zamów",pl_note:"Wsparcie techniczne i hosting: $20–40 miesięcznie.",
+faq_h:"Częste pytania",
+q1:"Czego potrzebują moi klienci?",a1:"Tylko Telegrama. Bot otwiera się z linku, nic nie trzeba instalować.",
+q2:"Czy mogę zmienić usługi i ceny po starcie?",a2:"Tak. Zmiany wprowadzamy my w ramach wsparcia.",
+q3:"Ile to kosztuje?",a3:"Bot podstawowy kosztuje od $150. Hosting i wsparcie: $20–40 miesięcznie. Bardziej złożone pakiety wyceniamy indywidualnie.",
+q4:"Od czego zacząć?",a4:"Wypróbuj demo i napisz do nas na Telegramie. Omówimy zadania i podamy cenę.",
+end_h:"Gotowy spróbować?",end_p:"Napisz na Telegramie o swoim lokalu, a podpowiemy, jaki bot będzie pasował.",end_btn:"Napisz na Telegramie",foot:"Boty Telegram dla biznesu"},
+en:{nav_demo:"Demo",nav_plans:"Plans",nav_faq:"FAQ",
+h1:"A Telegram bot that books your clients while you work",
+sub:"A client picks a service, a specialist and a time in Telegram in under a minute. You get a notification, they get a reminder. No phone calls, no DM threads.",
+cta_demo:"Try the demo",cta_plans:"Plans and prices",f1:"bot runs on a server",f2:"basic bot from",f3:"to try the demo",
+c_name:"Barbershop · demo",c_sub:"bot",c1:"Hi! Pick a service.",c2:"Haircut",c3:"Choose a time for today:",c4:"<b>Booked.</b> Haircut, today 17:30. I’ll remind you 2 hours before.",
+demo_h:"Try it yourself, a demo in 1 minute",demo_p:"Tap Start in Telegram and walk through the customer’s path: this is how the bot will look to your guests.",
+d1_h:"Barbershops",d1_p:"Choose a barber, pick a slot, get a confirmation and a reminder.",
+d2_h:"Beauty salons",d2_p:"Nails, brows, haircuts: book a service without any back-and-forth.",
+d3_h:"Auto services",d3_p:"Book a service, diagnostics or tyre fitting for a free slot.",
+d4_h:"Baths and saunas",d4_p:"Hourly bookings, reminders and promotions for guests.",
+d5_h:"Don’t see your business?",d5_p:"Message us and we’ll prepare a demo for your venue.",try:"Open the demo",write:"Message us on Telegram",
+how_h:"How it works",how_p:"Three steps from first look to a working bot.",
+s1_h:"Try the demo",s1_p:"Walk through the client’s path in the bot for your niche and decide what you need.",
+s2_h:"We set it up for you",s2_p:"Name, services, prices, specialists, working hours and owner notifications.",
+s3_h:"Launch and support",s3_p:"The bot runs on a server without breaks. Hosting and changes are part of support.",
+pl_h:"Plans and prices",pl_p:"Choose by task. We’ll give an exact price after a short chat.",
+pl1_t:"Most popular",pl1_h:"Basic",pl1_a:"Service menu",pl1_b:"Online booking",pl1_c:"Client reminders",pl1_d:"Owner notifications",
+pl2_t:"For sales",pl2_h:"Advanced",pl2_a:"Product catalogue with photos",pl2_b:"Cart and orders",pl2_c:"Payments via LiqPay / Mono / Stripe",pl2_d:"Delivery",
+pl3_t:"For learning",pl3_h:"Online schools and infobusiness",pl3_a:"Auto funnel",pl3_b:"Lesson delivery",pl3_c:"Homework and test checks",pl3_d:"Private channels by subscription",
+pl4_t:"For big projects",pl4_h:"Enterprise",pl4_p:"from $600",pl4_a:"CRM integration (Bitrix24, KeyCRM)",pl4_b:"Stock sync (1C / Google)",pl4_c:"Multi-language",
+order:"Order",pl_note:"Support and hosting: $20–40 per month.",
+faq_h:"FAQ",
+q1:"What do my clients need?",a1:"Just Telegram. The bot opens from a link, nothing to install.",
+q2:"Can I change services and prices after launch?",a2:"Yes. We make the changes as part of support.",
+q3:"How much does it cost?",a3:"The basic bot starts at $150. Hosting and support: $20–40 per month. More complex plans are priced to the task.",
+q4:"Where do I start?",a4:"Try the demo and message us on Telegram. We’ll discuss your needs and give a price.",
+end_h:"Ready to try?",end_p:"Tell us about your business on Telegram and we’ll suggest which bot fits.",end_btn:"Message us on Telegram",foot:"Telegram bots for business"}
+};
+var L="uk";
+try{var s=localStorage.getItem("wn_lang");if(s&&T[s])L=s;else{var n=(navigator.language||"").slice(0,2);if(T[n])L=n}}catch(e){var n2=(navigator.language||"").slice(0,2);if(T[n2])L=n2}
+function apply(){
+  var d=T[L];document.documentElement.lang=L;
+  document.querySelectorAll("[data-i]").forEach(function(el){var v=d[el.getAttribute("data-i")];if(v==null)return;if(el.hasAttribute("data-html"))el.innerHTML=v;else el.textContent=v});
+  document.querySelectorAll("[data-demo]").forEach(function(a){var k=a.getAttribute("data-demo");a.href=BOT+"?start="+(k?k+"_":"")+L});
+  document.querySelectorAll("[data-contact]").forEach(function(a){a.href=CONTACT});
+  document.querySelectorAll(".lang button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-l")===L?"true":"false")});
+  document.title="WhyNot Agency";
+}
+document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){L=b.getAttribute("data-l");try{localStorage.setItem("wn_lang",L)}catch(e){}apply()})});
+apply();
+</script>
+
+</body>
+</html>
