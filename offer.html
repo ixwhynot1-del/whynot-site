@@ -122,12 +122,14 @@ const name=(q.get("n")||"").replace(/[-_+]+/g," ").slice(0,60).trim();
 let lg=q.get("lang");
 if(!T[lg]){let b=(navigator.language||"uk").slice(0,2);lg=T[b]?b:"uk"}
 const $=id=>document.getElementById(id);
+function b64u(str){const b=new TextEncoder().encode(str);let r="";b.forEach(x=>r+=String.fromCharCode(x));return btoa(r).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function wantLink(l){let n=Array.from(name);let p="w"+l+(n.length?b64u(n.join("")):"");while(p.length>64&&n.length){n.pop();p="w"+l+b64u(n.join(""))}return `https://t.me/whynot_agency_demo_bot?start=${p}`}
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function draw(){
  const t=T[lg];document.documentElement.lang=lg;
  $("h1").textContent=t.h1(name);$("sub").textContent=t.sub;
  $("demo").textContent=t.demo;$("demo").href=DEMO;
- $("cta").textContent=t.cta;$("cta").href=`https://t.me/${TG}?text=`+encodeURIComponent(t.msg(name));
+ $("cta").textContent=t.cta;$("cta").href=wantLink(lg);
  $("hHow").textContent=t.hHow;$("hPr").textContent=t.hPr;$("hEx").textContent=t.hEx;
  $("steps").innerHTML=t.steps.map(s=>`<li>${esc(s)}</li>`).join("");
  $("packs").innerHTML=t.packs.map(p=>`<div class="pk${p[3]?" rec":""}"><div class="h"><b>${esc(p[0])}${p[3]?`<span class="tag">${esc(t.rec)}</span>`:""}</b><span class="pr">${esc(p[1])}</span></div><p>${esc(p[2])}</p></div>`).join("");
