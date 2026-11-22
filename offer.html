@@ -118,7 +118,7 @@ en:{h1:n=>n?`A Telegram bot for ${n}`:"A Telegram bot for your business",
  foot:"WhyNot Agency · Telegram bots for business",msg:n=>`Hi! I saw your page${n?` (${n})`:""}. I want a Telegram bot like this. What do you need to get started?`,vid:"demo_en.mp4"}
 };
 const q=new URLSearchParams(location.search);
-const name=(q.get("n")||"").slice(0,60).trim();
+const name=(q.get("n")||"").replace(/[-_+]+/g," ").slice(0,60).trim();
 let lg=q.get("lang");
 if(!T[lg]){let b=(navigator.language||"uk").slice(0,2);lg=T[b]?b:"uk"}
 const $=id=>document.getElementById(id);
